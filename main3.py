@@ -182,7 +182,7 @@ class Window(QWidget, Ui_Form):
     def on_pushButton_2_clicked(self):
         if all([self.flag1, self.flag2, self.flag3, self.flag4, self.flag5]):
             # print('开始合并小说')
-            self.textBrowser.append("小说合并中...")
+            self.textBrowser.append("\n\n小说合并中...")
             # 合并小说 删除小说章节文件 是耗时操作 需要起新线程做
             self.merge = Merge(bname=self.bname)
             self.merge.merged[bool].connect(self.merge_success)
@@ -194,7 +194,7 @@ class Window(QWidget, Ui_Form):
             self.textBrowser.append('*' * 50 + '别急嘛 兄弟 没下载完呢 等等啊~~~')
 
 
-if __name__ == "__main__":
+def main():
     import sys
 
     app = QApplication(sys.argv)
@@ -203,3 +203,7 @@ if __name__ == "__main__":
     window.setWindowIcon(QIcon(':/icon/images/icon.ico'))
     window.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
