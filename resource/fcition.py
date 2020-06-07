@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(758, 494)
+        Form.resize(758, 561)
         Form.setStyleSheet("")
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
@@ -22,6 +22,7 @@ class Ui_Form(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.tableWidget_2 = QtWidgets.QTableWidget(self.groupBox_3)
+        self.tableWidget_2.setMinimumSize(QtCore.QSize(0, 100))
         self.tableWidget_2.setObjectName("tableWidget_2")
         self.tableWidget_2.setColumnCount(4)
         self.tableWidget_2.setRowCount(2)
@@ -80,6 +81,7 @@ class Ui_Form(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.groupBox_2)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.textBrowser = QtWidgets.QTextBrowser(self.groupBox_2)
+        self.textBrowser.setMinimumSize(QtCore.QSize(0, 200))
         self.textBrowser.setObjectName("textBrowser")
         self.horizontalLayout_3.addWidget(self.textBrowser)
         self.gridLayout.addWidget(self.groupBox_2, 2, 0, 1, 2)
