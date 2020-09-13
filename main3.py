@@ -201,7 +201,7 @@ class Window(QWidget, Ui_Form):
         if success_flag:
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
             self.textBrowser.append(f'----> 存储位置：{os.path.join(os.getcwd(), self.bname)}.txt')
-            self.merge.stop()
+            # self.merge.stop()
 
     @pyqtSlot()
     def on_pushButton_2_clicked(self):
