@@ -4,7 +4,7 @@
 import os
 from math import ceil
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem
 
@@ -54,6 +54,8 @@ class Window(QWidget, Ui_Form):
         self.flag5 = False
         # 合并小说的线程
         self.merge = None
+        # 起一个定时器 判定是否各线程下载结束 开始合并章节
+        self.timer = None
 
     def search_book(self):
         # print("开始搜书")
@@ -161,6 +163,28 @@ class Window(QWidget, Ui_Form):
         self.worker5.download_info[dict].connect(self.ctrl_download_info)
         self.worker5.start()
         # print('+' * 50)
+        # 起定时器
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.start_merge_chapters)
+        self.timer.start(1000)
+
+    def start_merge_chapters(self):
+        print('abel---------------')
+        status1 = self.worker1.isFinished()
+        status2 = self.worker2.isFinished()
+        status3 = self.worker3.isFinished()
+        status4 = self.worker4.isFinished()
+        status5 = self.worker5.isFinished()
+        print(status1)
+        if all([status1, status2, status3, status4, status5]):
+            # 合并章节
+            self.textBrowser.append("\n\n小说合并中...")
+            # 合并小说 删除小说章节文件 是耗时操作 需要起新线程做
+            self.merge = Merge(bname=self.bname)
+            self.merge.merged[bool].connect(self.merge_success)
+            self.merge.start()
+            # 停止定时器
+            self.timer.stop()
 
     def download_btn(self, i):
         wg = QWidget()
@@ -177,6 +201,7 @@ class Window(QWidget, Ui_Form):
         if success_flag:
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
             self.textBrowser.append(f'----> 存储位置：{os.path.join(os.getcwd(), self.bname)}.txt')
+            self.merge.stop()
 
     @pyqtSlot()
     def on_pushButton_2_clicked(self):
