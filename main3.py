@@ -1,13 +1,10 @@
 # -*-coding:utf-8-*-
-
 # import fix_qt_import_error
 import os
 from math import ceil
-
-from PyQt5.QtCore import pyqtSlot, QTimer
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem
-
 from download_book import DWorker
 from get_chapters_info import Chapters
 from get_content import Worker
@@ -84,23 +81,18 @@ class Window(QWidget, Ui_Form):
         # 在面板显示下载信息
         self.textBrowser.append(book['title'])
         # 哪个下载线程在向主线程发送信号，主线程就更新哪个线程对应的进度条UI
-
         if self.sender() == self.worker1:
             self.progressBar.setRange(0, int(book['total']))
             self.progressBar.setValue(int(book['index']))
-
         if self.sender() == self.worker2:
             self.progressBar_2.setRange(0, int(book['total']))
             self.progressBar_2.setValue(int(book['index']))
-
         if self.sender() == self.worker3:
             self.progressBar_3.setRange(0, int(book['total']))
             self.progressBar_3.setValue(int(book['index']))
-
         if self.sender() == self.worker4:
             self.progressBar_4.setRange(0, int(book['total']))
             self.progressBar_4.setValue(int(book['index']))
-
         if self.sender() == self.worker5:
             self.progressBar_5.setRange(0, int(book['total']))
             self.progressBar_5.setValue(int(book['index']))
@@ -177,7 +169,6 @@ class Window(QWidget, Ui_Form):
 
 def main():
     import sys
-
     app = QApplication(sys.argv)
     window = Window()
     window.setWindowTitle("Abel的小说爬虫")
