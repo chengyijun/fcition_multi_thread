@@ -169,13 +169,11 @@ class Window(QWidget, Ui_Form):
         self.timer.start(1000)
 
     def start_merge_chapters(self):
-        print('abel---------------')
         status1 = self.worker1.isFinished()
         status2 = self.worker2.isFinished()
         status3 = self.worker3.isFinished()
         status4 = self.worker4.isFinished()
         status5 = self.worker5.isFinished()
-        print(status1)
         if all([status1, status2, status3, status4, status5]):
             # 合并章节
             self.textBrowser.append("\n\n小说合并中...")
@@ -202,21 +200,6 @@ class Window(QWidget, Ui_Form):
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
             self.textBrowser.append(f'----> 存储位置：{os.path.join(os.getcwd(), self.bname)}.txt')
             # self.merge.stop()
-
-    @pyqtSlot()
-    def on_pushButton_2_clicked(self):
-        if all([self.flag1, self.flag2, self.flag3, self.flag4, self.flag5]):
-            # print('开始合并小说')
-            self.textBrowser.append("\n\n小说合并中...")
-            # 合并小说 删除小说章节文件 是耗时操作 需要起新线程做
-            self.merge = Merge(bname=self.bname)
-            self.merge.merged[bool].connect(self.merge_success)
-            self.merge.start()
-            # print('小说合并完成')
-
-        else:
-            # print('没下载完呢 等等啊')
-            self.textBrowser.append('*' * 50 + '别急嘛 兄弟 没下载完呢 等等啊~~~')
 
 
 def main():
