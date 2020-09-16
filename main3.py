@@ -46,12 +46,6 @@ class Window(QWidget, Ui_Form):
         self.worker3 = None
         self.worker4 = None
         self.worker5 = None
-        # 各个线程是否下载完成
-        self.flag1 = False
-        self.flag2 = False
-        self.flag3 = False
-        self.flag4 = False
-        self.flag5 = False
         # 合并小说的线程
         self.merge = None
         # 起一个定时器 判定是否各线程下载结束 开始合并章节
@@ -88,58 +82,39 @@ class Window(QWidget, Ui_Form):
 
     def ctrl_download_info(self, book):
         # 在面板显示下载信息
-        # print("当前正在下载", book['title'])
         self.textBrowser.append(book['title'])
-        # if is_finished:
-        #     # print("========> 下载完成 <========")
-        #     self.textBrowser.append("========> 下载完成 <========")
-        # 操作进度条进度发生改变
-        # 设置进度条 长度范围
+        # 哪个下载线程在向主线程发送信号，主线程就更新哪个线程对应的进度条UI
 
         if self.sender() == self.worker1:
             self.progressBar.setRange(0, int(book['total']))
             self.progressBar.setValue(int(book['index']))
-            if int(book['total']) == int(book['index']):
-                self.flag1 = True
+
         if self.sender() == self.worker2:
             self.progressBar_2.setRange(0, int(book['total']))
             self.progressBar_2.setValue(int(book['index']))
-            if int(book['total']) == int(book['index']):
-                self.flag2 = True
+
         if self.sender() == self.worker3:
             self.progressBar_3.setRange(0, int(book['total']))
             self.progressBar_3.setValue(int(book['index']))
-            if int(book['total']) == int(book['index']):
-                self.flag3 = True
+
         if self.sender() == self.worker4:
             self.progressBar_4.setRange(0, int(book['total']))
             self.progressBar_4.setValue(int(book['index']))
-            if int(book['total']) == int(book['index']):
-                self.flag4 = True
+
         if self.sender() == self.worker5:
             self.progressBar_5.setRange(0, int(book['total']))
             self.progressBar_5.setValue(int(book['index']))
-            if int(book['total']) == int(book['index']):
-                self.flag5 = True
 
     def download_the_book(self, i):
-        # print('开始下载第 {} 本书'.format(i + 1))
-        # print("书名：{} ---- 链接：{}".format(self.books[i]['bname'], self.books[i]['blink']))
         self.textBrowser.clear()
         self.textBrowser.setText('开始下载第 {} 本书 ---- < {} >'.format(i + 1, self.books[i]['bname']))
-
-        # dwr = DWorker('https://www.biquge.tv/17_17293/')
-        # self.dworker.set_bname_and_blink(self.books[i]['bname'], self.books[i]['blink'])
-        # self.dworker.start()
         # 查询并返回需要下载本书的所有章节信息  由于是耗时操作 所以必须单独开线程
         self.chapters = Chapters(bname=self.books[i]['bname'], blink=self.books[i]['blink'])
         self.bname = self.books[i]['bname']
         self.chapters.chapters_got.connect(self.set_chapters_data)
         self.chapters.start()
-        # print('-' * 50)
 
     def set_chapters_data(self, data):
-        # print(data)
         self.chapters_data = data
         # 得到要下载的书章节信息之后 开始下载内容 由于耗时操作 所以起新线程
         workers_num = 5
@@ -162,8 +137,7 @@ class Window(QWidget, Ui_Form):
         self.worker5 = Worker(datas=self.chapters_data[4 * step:5 * step], bname=self.bname)
         self.worker5.download_info[dict].connect(self.ctrl_download_info)
         self.worker5.start()
-        # print('+' * 50)
-        # 起定时器
+        # 起定时器 监控各个下载线程是否下载完毕 都下载完毕就开启合并章节线程
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.start_merge_chapters)
         self.timer.start(1000)
@@ -199,7 +173,6 @@ class Window(QWidget, Ui_Form):
         if success_flag:
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
             self.textBrowser.append(f'----> 存储位置：{os.path.join(os.getcwd(), self.bname)}.txt')
-            # self.merge.stop()
 
 
 def main():
