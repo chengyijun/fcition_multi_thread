@@ -32,6 +32,10 @@ class Window(QWidget, Ui_Form):
         self.dworker.download_finished.connect(self.ctrl_download_info)
         # 初始化进度条的值为0
         self.progressBar.setValue(0)
+        self.progressBar_2.setValue(0)
+        self.progressBar_3.setValue(0)
+        self.progressBar_4.setValue(0)
+        self.progressBar_5.setValue(0)
         # 初始化信息展示区 清空内容
         self.textBrowser.clear()
         # 搜书线程
