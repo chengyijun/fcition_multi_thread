@@ -181,6 +181,8 @@ def main():
     window = Window()
     window.setWindowTitle("Abel的小说爬虫")
     window.setWindowIcon(QIcon(':/icon/images/icon.ico'))
+    with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
+        window.setStyleSheet(f.read())
     window.show()
     sys.exit(app.exec_())
 
