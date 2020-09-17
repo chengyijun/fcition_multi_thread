@@ -23,6 +23,10 @@ class Window(QWidget, Ui_Form):
         # 设置表格 单元格宽度自动适应
         self.tableWidget_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.books = None
+        # 搜书 点击搜索按钮搜书
+        self.pushButton.clicked.connect(self.search_book)
+        # 搜书 搜索框回车搜书
+        self.lineEdit.returnPressed.connect(self.search_book)
         # 初始化下载器
         self.dworker = DWorker()
         self.dworker.download_finished.connect(self.ctrl_download_info)
@@ -30,7 +34,7 @@ class Window(QWidget, Ui_Form):
         self.progressBar.setValue(0)
         # 初始化信息展示区 清空内容
         self.textBrowser.clear()
-        # 初始化搜书
+        # 搜书线程
         self.sb = SearchBook()
         self.sb.search_finished.connect(self.fill_book_table)
         # 需要下载书的章节信息

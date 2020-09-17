@@ -104,7 +104,6 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.groupBox, 3, 0, 1, 2)
 
         self.retranslateUi(Form)
-        self.pushButton.clicked.connect(Form.search_book)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

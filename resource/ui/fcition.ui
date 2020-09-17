@@ -209,24 +209,7 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="../../resource.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>search_book()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>722</x>
-     <y>37</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>823</x>
-     <y>37</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>search_book()</slot>
  </slots>

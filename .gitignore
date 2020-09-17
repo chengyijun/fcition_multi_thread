@@ -2,3 +2,6 @@ build/
 dist/
 .idea/
 __pycache__/
+*.spec
+build/
+dist/
