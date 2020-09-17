@@ -6,7 +6,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 from lxml import etree
 
-from test4 import get_safe_file_name
+from utils import get_safe_file_name
 
 
 class Worker(QThread):

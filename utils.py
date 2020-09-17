@@ -3,10 +3,6 @@ import os
 import re
 
 
-def main():
-    merge_book('启禀王爷：王妃，又盗墓啦！')
-
-
 def delete_target_dir(target_dir):
     if not os.path.exists(target_dir):
         return
@@ -38,6 +34,10 @@ def merge_book(bname):
             with open(os.path.join(os.getcwd(), bname, file), 'r', encoding='utf-8') as f2:
                 content = f2.read()
                 f.write(content + "\r\n")
+
+
+def main():
+    merge_book('启禀王爷：王妃，又盗墓啦！')
 
 
 if __name__ == '__main__':

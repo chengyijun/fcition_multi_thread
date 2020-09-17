@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 from lxml import etree
 
 from config_url import base_url
-from test4 import get_safe_file_name
+from utils import get_safe_file_name
 
 
 class Chapters(QThread):
