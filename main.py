@@ -30,11 +30,16 @@ class Setting(QDialog, Ui_Setting):
         # 附加主题
         with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
             self.setStyleSheet(f.read())
+        # 读取存储位置并展示
+        dlp = get_config().get('download').get('path')
+        if not os.path.exists(dlp):
+            dlp = get_config().get('download').get('default_path')
+        self.label_2.setText(dlp)
 
     @pyqtSlot()
     def on_pushButton_clicked(self):
-        directory = QFileDialog.getExistingDirectory()
-        data = {'download': {'path': directory}}
+        directory = QFileDialog.getExistingDirectory(caption='请选择下载位置', directory='D:/')
+        data = {'download': {'path': directory, 'default_path': 'D:/'}}
         # 把新的下载地址展示出来
         self.label_2.setText(directory)
         # 把新的下载地址写入配置文件

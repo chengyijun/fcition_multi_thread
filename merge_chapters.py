@@ -29,6 +29,8 @@ class Merge(QThread):
         sorted_files = sorted(files, key=lambda x: int(str(x).split('-')[0]))
         # print(sorted_files)
         dlp = get_config().get('download').get('path')
+        if not os.path.exists(dlp):
+            dlp = get_config().get('download').get('default_path')
 
         with open(f'{dlp}/{bname}.txt', 'a', encoding='utf-8') as f:
             for file in sorted_files:
