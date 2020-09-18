@@ -26,6 +26,10 @@ class Setting(QDialog, Ui_Setting):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("设置")
+        self.setWindowIcon(QIcon(':/icon/images/icon.ico'))
+        # 附加主题
+        with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
+            self.setStyleSheet(f.read())
 
     @pyqtSlot()
     def on_pushButton_clicked(self):
@@ -43,14 +47,15 @@ class About(QDialog, Ui_About):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("关于我们")
+        self.setWindowIcon(QIcon(':/icon/images/icon.ico'))
+        # 附加主题
+        with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
+            self.setStyleSheet(f.read())
 
 
 class Window(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Abel的小说爬虫")
-        self.move(600, 200)
-        self.resize(400, 400)
         self.setupUi(self)
         # 设置表格 单元格宽度自动适应
         self.tableWidget_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -91,6 +96,14 @@ class Window(QMainWindow, Ui_MainWindow):
         self.action_2.triggered.connect(self.about)
         # 设置 连接信号与槽
         self.action.triggered.connect(self.setting)
+        # 主窗体属性
+        self.setWindowTitle("Abel的小说爬虫")
+        self.move(600, 200)
+        self.resize(700, 600)
+        self.setWindowIcon(QIcon(':/icon/images/icon.ico'))
+        # 附加主题
+        with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
+            self.setStyleSheet(f.read())
 
     def setting(self):
         setting = Setting()
@@ -224,10 +237,10 @@ def main():
     import sys
     app = QApplication(sys.argv)
     window = Window()
-    window.setWindowTitle("Abel的小说爬虫")
-    window.setWindowIcon(QIcon(':/icon/images/icon.ico'))
-    with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
-        window.setStyleSheet(f.read())
+    # window.setWindowTitle("Abel的小说爬虫")
+    # window.setWindowIcon(QIcon(':/icon/images/icon.ico'))
+    # with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
+    #     window.setStyleSheet(f.read())
     window.show()
     sys.exit(app.exec_())
 

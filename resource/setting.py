@@ -54,3 +54,4 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "当前下载位置："))
         self.label_2.setText(_translate("Dialog", "D:\\"))
         self.pushButton.setText(_translate("Dialog", "更改下载位置"))
+import resource_rc
