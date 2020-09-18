@@ -1,6 +1,23 @@
 # -*- coding:utf-8 -*-
 import os
 import re
+import yaml
+
+
+def set_config(data: dict):
+    yaml_file = os.path.join(os.getcwd(), "./config/main.yml")
+    file = open(yaml_file, 'w', encoding="utf-8")
+    file.write(yaml.dump(data))
+    file.close()
+
+
+def get_config():
+    yaml_file = os.path.join(os.getcwd(), "./config/main.yml")
+    file = open(yaml_file, 'r', encoding="utf-8")
+    file_data = file.read()
+    file.close()
+    data = yaml.load(file_data, Loader=yaml.FullLoader)
+    return data
 
 
 def delete_target_dir(target_dir):

@@ -3,6 +3,8 @@ import os
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
+from utils import get_config
+
 
 class Merge(QThread):
     merged = pyqtSignal([bool])
@@ -26,7 +28,9 @@ class Merge(QThread):
         # print(files)
         sorted_files = sorted(files, key=lambda x: int(str(x).split('-')[0]))
         # print(sorted_files)
-        with open(f'./{bname}.txt', 'a', encoding='utf-8') as f:
+        dlp = get_config().get('download').get('path')
+
+        with open(f'{dlp}/{bname}.txt', 'a', encoding='utf-8') as f:
             for file in sorted_files:
                 with open(os.path.join(os.getcwd(), bname, file), 'r', encoding='utf-8') as f2:
                     content = f2.read()

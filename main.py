@@ -1,19 +1,51 @@
 # -*-coding:utf-8-*-
 # import fix_qt_import_error
 import os
+import typing
 from math import ceil
-from PyQt5.QtCore import QTimer
+
+from PyQt5 import QtCore
+from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem, QMainWindow, \
+    QDialog, QFileDialog
 from download_book import DWorker
 from get_chapters_info import Chapters
 from get_content import Worker
 from merge_chapters import Merge
-from resource.fcition import Ui_Form
+from resource.about import Ui_Dialog as Ui_About
+from resource.setting import Ui_Dialog as Ui_Setting
+from resource.fiction import Ui_MainWindow
 from search_book import SearchBook
+from utils import get_config, set_config
 
 
-class Window(QWidget, Ui_Form):
+class Setting(QDialog, Ui_Setting):
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setupUi(self)
+        self.setWindowTitle("设置")
+
+    @pyqtSlot()
+    def on_pushButton_clicked(self):
+        directory = QFileDialog.getExistingDirectory()
+        data = {'download': {'path': directory}}
+        # 把新的下载地址展示出来
+        self.label_2.setText(directory)
+        # 把新的下载地址写入配置文件
+        set_config(data)
+
+
+class About(QDialog, Ui_About):
+
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setupUi(self)
+        self.setWindowTitle("关于我们")
+
+
+class Window(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Abel的小说爬虫")
@@ -55,6 +87,18 @@ class Window(QWidget, Ui_Form):
         self.merge = None
         # 起一个定时器 判定是否各线程下载结束 开始合并章节
         self.timer = None
+        # 关于我们 连接信号与槽
+        self.action_2.triggered.connect(self.about)
+        # 设置 连接信号与槽
+        self.action.triggered.connect(self.setting)
+
+    def setting(self):
+        setting = Setting()
+        setting.exec_()
+
+    def about(self):
+        about = About()
+        about.exec_()
 
     def search_book(self):
         # print("开始搜书")
@@ -172,7 +216,8 @@ class Window(QWidget, Ui_Form):
     def merge_success(self, success_flag):
         if success_flag:
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
-            self.textBrowser.append(f'----> 存储位置：{os.path.join(os.getcwd(), self.bname)}.txt')
+            dlp = get_config().get('download').get('path')
+            self.textBrowser.append(f'----> 存储位置：{os.path.join(dlp, self.bname)}.txt'.replace('\\', '/'))
 
 
 def main():
