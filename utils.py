@@ -35,7 +35,7 @@ def delete_target_dir(target_dir):
 
 
 def get_safe_file_name(file_name):
-    return re.sub(r'[<>,/,\\,|,:,"",*,?]', '-', file_name)
+    return re.sub(r'[<,>,/,\\,|,:,",\',.,*,?]', '-', file_name)
 
 
 def merge_book(bname):

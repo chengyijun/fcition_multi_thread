@@ -3,27 +3,20 @@
 # @Time    : 2020/9/18 8:07
 # @File    : test.py
 # @desc:
+import re
 import typing
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QApplication, QFileDialog
 
+def get_safe_file_name(file_name):
+    return re.sub(r'[<,>,/,\\,|,:,",\',.,*,?]', '-', file_name)
 
-class Demo(QWidget):
-
-    def __init__(self, parent=None) -> None:
-        super().__init__(parent)
-        directory = QFileDialog.getExistingDirectory()
-        print(directory)
 
 
 def main():
-    import sys
-    app = QApplication(sys.argv)
-    window = Demo()
-    window.setWindowTitle("选择路径")
-    window.show()
-    sys.exit(app.exec_())
+    res = get_safe_file_name("\我是文件名")
+    print(res)
 
 
 if __name__ == '__main__':
