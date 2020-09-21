@@ -1,21 +1,20 @@
 # -*- coding:utf-8 -*-
 import os
 import re
+
 import yaml
 
 
 def set_config(data: dict):
     yaml_file = os.path.join(os.getcwd(), "./config/main.yml")
-    file = open(yaml_file, 'w', encoding="utf-8")
-    file.write(yaml.dump(data))
-    file.close()
+    with open(yaml_file, 'w', encoding="utf-8") as f:
+        f.write(yaml.dump(data))
 
 
 def get_config():
     yaml_file = os.path.join(os.getcwd(), "./config/main.yml")
-    file = open(yaml_file, 'r', encoding="utf-8")
-    file_data = file.read()
-    file.close()
+    with open(yaml_file, 'r', encoding="utf-8") as f:
+        file_data = f.read()
     data = yaml.load(file_data, Loader=yaml.FullLoader)
     return data
 
@@ -36,7 +35,7 @@ def delete_target_dir(target_dir):
 
 
 def get_safe_file_name(file_name):
-    return re.sub(r'[<>,/,\\\,|,:,"",*,?]', '-', file_name)
+    return re.sub(r'[<>,/,\\,|,:,"",*,?]', '-', file_name)
 
 
 def merge_book(bname):

@@ -235,6 +235,8 @@ class Window(QMainWindow, Ui_MainWindow):
         if success_flag:
             self.textBrowser.append('=' * 20 + f'《{self.bname}》 合并完成 尽情享受吧' + '=' * 20)
             dlp = get_config().get('download').get('path')
+            if not os.path.exists(dlp):
+                dlp = get_config().get('download').get('default_path')
             self.textBrowser.append(f'----> 存储位置：{os.path.join(dlp, self.bname)}.txt'.replace('\\', '/'))
 
 
@@ -242,10 +244,6 @@ def main():
     import sys
     app = QApplication(sys.argv)
     window = Window()
-    # window.setWindowTitle("Abel的小说爬虫")
-    # window.setWindowIcon(QIcon(':/icon/images/icon.ico'))
-    # with open("./theme/blue.qss", 'r', encoding='utf-8') as f:
-    #     window.setStyleSheet(f.read())
     window.show()
     sys.exit(app.exec_())
 
