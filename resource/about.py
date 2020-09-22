@@ -45,5 +45,5 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "                Email：zilongcheng@outlook.com"))
-        self.label_2.setText(_translate("Dialog", "                emm~ 反馈了 bug也不一定修哈~~"))
+        self.label_2.setText(_translate("Dialog", "                    作者很懒 BUG随缘修复"))
 import resource_rc

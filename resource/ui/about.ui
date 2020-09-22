@@ -39,7 +39,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>                emm~ 反馈了 bug也不一定修哈~~</string>
+        <string>                    作者很懒 BUG随缘修复</string>
        </property>
       </widget>
      </item>
