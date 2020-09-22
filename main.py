@@ -1,21 +1,21 @@
 # -*-coding:utf-8-*-
 # import fix_qt_import_error
 import os
-import typing
 from math import ceil
 
-from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem, QMainWindow, \
     QDialog, QFileDialog
+
+from config_url import base_url
 from download_book import DWorker
 from get_chapters_info import Chapters
 from get_content import Worker
 from merge_chapters import Merge
 from resource.about import Ui_Dialog as Ui_About
-from resource.setting import Ui_Dialog as Ui_Setting
 from resource.fiction import Ui_MainWindow
+from resource.setting import Ui_Dialog as Ui_Setting
 from search_book import SearchBook
 from utils import get_config, set_config
 
@@ -171,7 +171,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.textBrowser.clear()
         self.textBrowser.setText('开始下载第 {} 本书 ---- < {} >'.format(i + 1, self.books[i]['bname']))
         # 查询并返回需要下载本书的所有章节信息  由于是耗时操作 所以必须单独开线程
-        self.chapters = Chapters(bname=self.books[i]['bname'], blink=self.books[i]['blink'])
+        self.chapters = Chapters(bname=self.books[i]['bname'], blink=base_url + self.books[i]['blink'])
         self.bname = self.books[i]['bname']
         self.chapters.chapters_got.connect(self.set_chapters_data)
         self.chapters.start()

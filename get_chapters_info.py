@@ -28,14 +28,14 @@ class Chapters(QThread):
         res.encoding = 'gbk'
         xres = etree.HTML(res.text)
 
-        chapters_origin = xres.xpath('//dd/a/text()')
+        chapters_origin = xres.xpath('//div[@class="chapter"]/a/text()')
         true_index = 0
         for co in chapters_origin:
             if '第一章' in co:
                 true_index = chapters_origin.index(co)
                 break
 
-        chapters = xres.xpath('//dd')[true_index:]
+        chapters = xres.xpath('//div[@class="chapter"]')[true_index:]
         total = len(chapters)
 
         for index, chapter in enumerate(chapters, start=1):
@@ -59,7 +59,7 @@ def main():
     import sys
     app = QApplication(sys.argv)
 
-    chapters = Chapters(blink='http://www.biquge.tv/43_43156/', bname='从盗墓开始打卡签到')
+    chapters = Chapters(blink='https://qxs.la/120367/', bname='盗墓者笔录')
     chapters.chapters_got.connect(lambda x: print(x))
     chapters.start()
 

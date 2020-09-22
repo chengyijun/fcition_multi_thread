@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import re
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -36,6 +37,8 @@ class Worker(QThread):
                 'href': href
             }
             self.download_info[dict].emit(data)
+            # 频率反扒
+            # time.sleep(random.random() + 1)
 
     def task(self, href):
         heardes = {
@@ -43,16 +46,23 @@ class Worker(QThread):
                           'Chrome/49.0.2623.112 Safari/537.36'
         }
 
-        res = requests.get(url=href, headers=heardes)
-        res.encoding = 'gbk'
-        xres = etree.HTML(res.text)
-        content = ''
-        try:
-            content = xres.xpath('//*[@id="content"]')[0].xpath('string(.)')
-        except:
-            print('--------------章节删除 获取不到--------------')
-        finally:
-            return content
+        while True:
+            res = requests.get(url=href, headers=heardes)
+            res.encoding = 'gbk'
+            xres = etree.HTML(res.text)
+            content = ''
+            try:
+                content = xres.xpath('//*[@id="content"]')[0].xpath('string(.)')
+                break
+            except Exception as e:
+                continue
+                # print('--------------章节删除 获取不到--------------', e, href)
+
+        # 内容清洗
+        content = re.sub(r'\n', '', content)
+        content = re.sub(r'ad\d+\(\);', '', content)
+        content = re.sub(r'全新的短域名.*?提供更快更稳定的访问，亲爱的读者们，赶紧把我记下来吧.*?（全小说无弹窗）', '', content)
+        return content
 
 
 def main():
