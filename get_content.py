@@ -7,7 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 from lxml import etree
 
-from utils import get_safe_file_name
+from utils import get_safe_file_name, get_random_useragent
 
 
 class Worker(QThread):
@@ -42,12 +42,11 @@ class Worker(QThread):
 
     def task(self, href):
         heardes = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/49.0.2623.112 Safari/537.36'
+            'User-Agent': get_random_useragent()
         }
 
         while True:
-            res = requests.get(url=href, headers=heardes)
+            res = requests.get(url=href, headers=heardes, timeout=10)
             res.encoding = 'gbk'
             xres = etree.HTML(res.text)
             content = ''

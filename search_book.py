@@ -5,6 +5,7 @@ from PyQt5.Qt import *
 from lxml import etree
 
 from config_url import search_book_url
+from utils import get_random_useragent
 
 
 class SearchBook(QThread):
@@ -26,7 +27,7 @@ class SearchBook(QThread):
         encodestr = quote(self.bname, encoding="utf-8")
 
         heardes = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'
+            'User-Agent': get_random_useragent()
         }
 
         res = requests.get(url=search_book_url + encodestr,

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 from lxml import etree
 
 from config_url import base_url
-from utils import get_safe_file_name
+from utils import get_safe_file_name, get_random_useragent
 
 
 class Chapters(QThread):
@@ -19,9 +19,7 @@ class Chapters(QThread):
 
     def task(self):
         heardes = {
-            'User-Agent':
-                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 '
-                'Safari/537.36'
+            'User-Agent': get_random_useragent()
         }
 
         res = requests.get(url=self.blink, headers=heardes)

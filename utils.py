@@ -52,6 +52,11 @@ def merge_book(bname):
                 f.write(content + "\r\n")
 
 
+def get_random_useragent():
+    from fake_useragent import UserAgent
+    return UserAgent(path='./config/fake_useragent.json').random
+
+
 def main():
     merge_book('启禀王爷：王妃，又盗墓啦！')
 
