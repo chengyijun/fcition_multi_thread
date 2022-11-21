@@ -1,2 +1,2 @@
-base_url = 'http://quanxs.net'
-search_book_url = base_url + '/s_'
+base_url = "https://www.biquge7.top"
+search_book_url = base_url + "/search?keyword="

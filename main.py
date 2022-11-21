@@ -8,7 +8,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QApplication, QHeaderView, QTableWidgetItem, QMainWindow, \
     QDialog, QFileDialog
 
-from config_url import base_url
 from download_book import DWorker
 from get_chapters_info import Chapters
 from get_content import Worker
@@ -171,13 +170,14 @@ class Window(QMainWindow, Ui_MainWindow):
         self.textBrowser.clear()
         self.textBrowser.setText('开始下载第 {} 本书 ---- < {} >'.format(i + 1, self.books[i]['bname']))
         # 查询并返回需要下载本书的所有章节信息  由于是耗时操作 所以必须单独开线程
-        self.chapters = Chapters(bname=self.books[i]['bname'], blink=base_url + self.books[i]['blink'])
+        self.chapters = Chapters(bname=self.books[i]['bname'], blink=self.books[i]['blink'])
         self.bname = self.books[i]['bname']
         self.chapters.chapters_got.connect(self.set_chapters_data)
         self.chapters.start()
 
     def set_chapters_data(self, data):
         self.chapters_data = data
+
         # 得到要下载的书章节信息之后 开始下载内容 由于耗时操作 所以起新线程
         workers_num = 5
         step = ceil(len(self.chapters_data) / workers_num)

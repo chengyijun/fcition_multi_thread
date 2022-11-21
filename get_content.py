@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
-import os
-import re
 
 import requests
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication
-from lxml import etree
+from bs4 import BeautifulSoup
 
+from config import ROOT_PATH
 from utils import get_safe_file_name, get_random_useragent
 
 
@@ -25,9 +24,11 @@ class Worker(QThread):
             href = data.get('href')
             index = data.get('index')
             title = get_safe_file_name(data.get('title'))
-            file_name = os.path.join(os.getcwd(), get_safe_file_name(self.bname))
+            file_name = get_safe_file_name(self.bname)
             content = self.task(href)
             # print(f'{file_name}/{index}-{title}.txt')
+
+            ROOT_PATH.joinpath(file_name).mkdir(parents=True, exist_ok=True)
             with open(f'{file_name}/{index}-{title}.txt', 'w', encoding='utf-8') as f:
                 f.write(f'{title}\n{content}\n\n')
             data = {
@@ -44,32 +45,30 @@ class Worker(QThread):
         heardes = {
             'User-Agent': get_random_useragent()
         }
+        res = requests.get(url=href, headers=heardes, timeout=10)
+        # res.encoding = 'gbk'
+        bs = BeautifulSoup(res.text, "lxml")
+        content = ""
+        try:
+            cs = bs.select_one("div.text")
+            for index, paragraph in enumerate(cs.strings):
+                if index == 0:
+                    if "，更新快，，免费读！" in paragraph:
+                        continue
+                content += paragraph + "\n"
+            print(content)
 
-        while True:
-            res = requests.get(url=href, headers=heardes, timeout=10)
-            res.encoding = 'gbk'
-            xres = etree.HTML(res.text)
-            content = ''
-            try:
-                content = xres.xpath('//*[@id="content"]')[0].xpath('string(.)')
-                break
-            except Exception as e:
-                continue
-                # print('--------------章节删除 获取不到--------------', e, href)
-
-        # 内容清洗
-        content = re.sub(r'\n', '', content)
-        content = re.sub(r'ad\d+\(\);', '', content)
-        content = re.sub(r'全新的短域名.*?提供更快更稳定的访问，亲爱的读者们，赶紧把我记下来吧.*?（全小说无弹窗）', '', content)
+            # 内容清洗
+        except:
+            pass
+            print('--------------章节删除 获取不到--------------')
         return content
 
 
 def main():
     import sys
     app = QApplication(sys.argv)
-    datas = [
-        {'href': 'https://www.biquge.tv/18_18405/19534328.html', 'index': 1, 'title': '第1229章 又回尊王墓', 'total': 1240},
-        {'href': 'https://www.biquge.tv/18_18405/19534326.html', 'index': 2, 'title': '第1228章 再见小凤娇', 'total': 1240}]
+    datas = [{'href': 'https://www.biquge7.top/37360/1', 'index': 1, 'title': '引子', 'total': 241}]
     worker = Worker(datas=datas, bname='鬼吹灯')
     worker.download_info[dict].connect(lambda x: print(x))
     worker.start()

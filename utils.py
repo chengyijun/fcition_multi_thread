@@ -54,7 +54,7 @@ def merge_book(bname):
 
 def get_random_useragent():
     from fake_useragent import UserAgent
-    return UserAgent(path='./config/fake_useragent.json').random
+    return UserAgent().random
 
 
 def main():
